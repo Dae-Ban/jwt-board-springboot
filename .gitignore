@@ -1,0 +1,22 @@
+# ============ frontend ============
+frontend/node_modules/
+frontend/build/
+frontend/.env
+frontend/.env.*
+
+# ============ backend ============
+backend/.gradle/
+backend/build/
+backend/HELP.md
+backend/bin/
+backend/src/main/resources/secret.properties
+
+# ============ IDE / Tool ============
+.vscode/
+.settings/
+.classpath
+.project
+*.log
+
+# ============ OS / Misc ============
+.DS_Store
