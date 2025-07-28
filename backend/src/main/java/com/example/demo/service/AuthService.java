@@ -32,7 +32,7 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setNickname(request.getNickname());
         user.setRole("USER");
-
+        userRepository.save(user);
     }
 
     public String login(LoginRequest request) {

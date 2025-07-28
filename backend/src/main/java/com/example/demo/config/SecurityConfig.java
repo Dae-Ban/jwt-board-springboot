@@ -31,7 +31,23 @@ public class SecurityConfig {
                 return http
                                 .csrf(csrf -> csrf.disable())
                                 .httpBasic(httpBasic -> httpBasic.disable())
-                                .formLogin(form -> form.disable())
+                                .formLogin(form -> form
+                                                .loginProcessingUrl("/auth/login")
+                                                .failureHandler((request, response, exception) -> {
+                                                        String message;
+                                                        if (exception instanceof UsernameNotFoundException) {
+                                                                message = "존재하지 않는 사용자입니다.";
+                                                        } else if (exception instanceof BadCredentialsException) {
+                                                                message = "아이디 또는 비밀번호가 일치하지 않습니다.";
+                                                        } else {
+                                                                message = "로그인에 실패했습니다.";
+                                                        }
+
+                                                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                                                        response.setContentType("application/json;charset=UTF-8");
+                                                        response.getWriter().write(objectMapper.writeValueAsString(
+                                                                        ApiResponse.failure(request, 401, message)));
+                                                }))
                                 .sessionManagement(session -> session
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                                 .authorizeHttpRequests(auth -> auth
@@ -41,8 +57,8 @@ public class SecurityConfig {
                                                 UsernamePasswordAuthenticationFilter.class)
 
                                 .exceptionHandling(exception -> exception
-                                                .authenticationEntryPoint(authenticationEntryPoint)     // 401
-                                                .accessDeniedHandler(accessDeniedHandler))              // 403
+                                                .authenticationEntryPoint(authenticationEntryPoint) // 401
+                                                .accessDeniedHandler(accessDeniedHandler)) // 403
 
                                 .build();
         }
