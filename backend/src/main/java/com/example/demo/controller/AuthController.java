@@ -43,10 +43,9 @@ public class AuthController {
             HttpServletRequest request, HttpServletResponse response) {
         String token = authService.login(loginRequest);
 
-        boolean isLocal = request.getServerName().contains("localhost");
         ResponseCookie cookie = ResponseCookie.from("accessToken", token)
                 .httpOnly(true)
-                .secure(!isLocal) // http 로컬만 허용
+                .secure(true)
                 .path("/")
                 .sameSite("None") // 리버스 프록시 설정 후 Strict
                 .maxAge(Duration.ofHours(1))
