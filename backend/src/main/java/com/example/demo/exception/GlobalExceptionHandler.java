@@ -41,6 +41,13 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.failure(request, HttpStatus.UNAUTHORIZED.value(), message));
     }
 
+	// 401 - 토큰 인증 실패
+	@ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInvalidToken(InvalidTokenException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ApiResponse.failure(request, HttpStatus.UNAUTHORIZED.value(), ex.getMessage()));
+    }
+
 	// 500 - 예상하지 못한 서버 오류
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ApiResponse<Void>> handleUnexpected(Exception ex, HttpServletRequest request) {
