@@ -57,6 +57,23 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success(request, 200, data));
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> logout(HttpServletRequest request, HttpServletResponse response) {
+        ResponseCookie deleteCookie = ResponseCookie.from("accessToken", "")
+                .path("/")
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .maxAge(0) // 쿠키 즉시 만료
+                .build();
+
+        response.addHeader("Set-Cookie", deleteCookie.toString());
+
+        Map<String, Object> data = Map.of("message", "로그아웃 완료");
+
+        return ResponseEntity.ok(ApiResponse.success(request, 200, data));
+    }
+
     @GetMapping("/check")
     public ResponseEntity<ApiResponse<Map<String, Object>>> checkLogin(HttpServletRequest request) {
         String token = null;
@@ -71,7 +88,7 @@ public class AuthController {
             }
         }
 
-        jwtTokenProvider.validateToken(token);  // 유효하면 통과
+        jwtTokenProvider.validateToken(token); // 유효하면 통과
         String username = jwtTokenProvider.getUsername(token);
 
         Map<String, Object> data = Map.of(

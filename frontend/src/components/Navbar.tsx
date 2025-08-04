@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/index';
 import { authActions } from '../store/authSlice';
+import { logout } from '../api/auth';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -15,6 +16,7 @@ const Navbar = () => {
     };
 
     const handleLogout = () => {
+        logout();
         dispatch(authActions.logout());
         sessionStorage.removeItem('auth');
         navigate('/');
