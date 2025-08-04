@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost/auth'; // Spring Boot 백엔드 주소
+const API_BASE_URL = 'http://localhost:8080/auth'; // Spring Boot 백엔드 주소
 
 export const register = async (data: { username: string; password: string; nickname: string }) => {
   const response = await axios.post(`${API_BASE_URL}/register`, data);
