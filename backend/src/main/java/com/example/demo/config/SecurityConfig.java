@@ -37,7 +37,7 @@ public class SecurityConfig {
                                 .sessionManagement(session -> session
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                                 .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers("/auth/**").permitAll() // 로그인, 회원가입은 허용
+                                                .requestMatchers("/auth/**").permitAll()
                                                 .anyRequest().authenticated())
                                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                                                 UsernamePasswordAuthenticationFilter.class)
