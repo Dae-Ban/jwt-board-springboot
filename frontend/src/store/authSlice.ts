@@ -5,10 +5,13 @@ interface AuthState {
     username: string | null;
 }
 
-const initialState: AuthState = {
-    isLoggedIn: false,
-    username: null,
-};
+const storedAuth = sessionStorage.getItem('auth');
+const initialState: AuthState = storedAuth
+    ? JSON.parse(storedAuth)
+    : {
+        isLoggedIn: false,
+        username: null,
+    };
 
 const authSlice = createSlice({
     name: 'auth',
