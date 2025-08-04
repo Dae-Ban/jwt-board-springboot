@@ -8,6 +8,6 @@ export const register = async (data: { username: string; password: string; nickn
 };
 
 export const login = async (data: { username: string; password: string }) => {
-  const response = await axios.post(`${API_BASE_URL}/login`, data);
-  return response.data; // { token: "..." }
+  const response = await axios.post(`${API_BASE_URL}/login`, data, { withCredentials: true });
+  return response.data;
 };
