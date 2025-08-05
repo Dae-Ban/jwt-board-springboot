@@ -7,8 +7,10 @@ const Mypage = () => {
         <div id='mypage'>
             <h2>마이페이지</h2>
             <hr />
-            <MypageAside onSelectMenu={setSelectedMenu} />
-            <MypageMain selectedMenu={selectedMenu} />
+            <div id='mypage-wrapper'>
+                <MypageAside onSelectMenu={setSelectedMenu} />
+                <MypageMain selectedMenu={selectedMenu} />
+            </div>
         </div>
     );
 }

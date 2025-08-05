@@ -25,13 +25,12 @@ const Navbar = () => {
     return (
         <nav>
             {isLoggedIn ? (
-                <div>
-                    <p>환영합니다, {username}님!</p>
-                    <button onClick={handleLogout}>로그아웃</button>
-                </div>
+                <span>
+                    <span>환영합니다, {username}님!</span>
+                    <span><button onClick={handleLogout}>로그아웃</button></span>
+                </span>
             ) : (
-                
-                <button onClick={handleLogin}>로그인</button>
+                <span><button onClick={handleLogin}>로그인</button></span>
             )}
         </nav>
     );

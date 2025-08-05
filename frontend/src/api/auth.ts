@@ -3,7 +3,7 @@ import axios from 'axios';
 const API_BASE_URL = 'http://localhost:8080/auth';
 
 export const register = async (data: { username: string; password: string; nickname: string }) => {
-  const response = await axios.post(`${API_BASE_URL}/register`, data);
+  const response = await axios.post(`${API_BASE_URL}/register`, data, { withCredentials: true });
   return response.data;
 };
 
