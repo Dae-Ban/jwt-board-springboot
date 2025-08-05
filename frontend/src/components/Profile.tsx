@@ -13,6 +13,8 @@ const Profile = () => {
     const [newPassword, setNewPassword] = useState("");
 
     useEffect(() => {
+        const token = document.cookie.includes('accessToken');
+        if (!token) return;
         const fetchData = async () => {
             try {
                 const data = await myInfo();

@@ -1,8 +1,8 @@
 import { JSX, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { authActions } from '../store/authSlice';
+import { useNavigate } from 'react-router-dom';
 import { checkLogin } from '../api/auth';
+import { authActions } from '../store/authSlice';
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const [checking, setChecking] = useState(true);
@@ -11,16 +11,23 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
 
   useEffect(() => {
     const validate = async () => {
-      const { isAuthenticated, username } = await checkLogin();
+      try {
+        const { isAuthenticated, username } = await checkLogin();
 
-      if (isAuthenticated) {
-        dispatch(authActions.login({ username }));
-      } else {
+        if (isAuthenticated) {
+          dispatch(authActions.login({ username }));
+        } else {
+          dispatch(authActions.logout());
+          navigate('/login');
+        }
+      } catch (error) {
+        // 서버 응답 실패, 네트워크 문제, 401 등
+        console.warn('인증 확인 중 오류 발생:', error);
         dispatch(authActions.logout());
         navigate('/login');
+      } finally {
+        setChecking(false);
       }
-
-      setChecking(false);
     };
 
     validate();

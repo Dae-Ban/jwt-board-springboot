@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import MypageAside from '../components/MypageAside';
 import MypageMain from '../components/MypageMain';
+
 const Mypage = () => {
     const [selectedMenu, setSelectedMenu] = useState('profile');
     return (
