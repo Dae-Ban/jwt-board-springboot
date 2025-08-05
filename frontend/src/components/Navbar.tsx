@@ -12,7 +12,7 @@ const Navbar = () => {
     const username = useSelector((state: RootState) => state.auth.username);
 
     const handleLogin = () => {
-         navigate('/login');
+        navigate('/login');
     };
 
     const handleLogout = () => {
@@ -24,14 +24,18 @@ const Navbar = () => {
 
     return (
         <nav>
-            {isLoggedIn ? (
-                <span>
-                    <span>환영합니다, {username}님!</span>
-                    <span><button onClick={handleLogout}>로그아웃</button></span>
-                </span>
-            ) : (
-                <span><button onClick={handleLogin}>로그인</button></span>
-            )}
+            <span id='nav-menus'>
+                <span><a href='/'><button>홈</button></a></span>
+                <span><a href='/about'><button>소개</button></a></span>
+                {isLoggedIn ? (
+                    <span className='logged-in'>
+                        <span>환영합니다, {username}님!</span>
+                        <span><button onClick={handleLogout}>로그아웃</button></span>
+                    </span>
+                ) : (
+                    <span><button onClick={handleLogin}>로그인</button></span>
+                )}
+            </span>
         </nav>
     );
 }
