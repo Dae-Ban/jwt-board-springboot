@@ -1,0 +1,14 @@
+#about-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#about-content table {
+    width: 90%;
+}
+
+#about-content .group-start td {
+  padding-top: 16px;
+}
