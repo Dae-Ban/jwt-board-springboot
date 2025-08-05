@@ -1,11 +1,11 @@
 import React from 'react';
-import Navbar from "../components/Navbar";
 
 const HomePage = () => {
     return (
         <div>
-            <Navbar />
             <h1>Home</h1>
+            <hr/>
+            <a href='/mypage'><button>마이페이지</button></a>
         </div>
     );
 }

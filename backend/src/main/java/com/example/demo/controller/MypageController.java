@@ -1,7 +1,11 @@
 package com.example.demo.controller;
 
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,5 +33,27 @@ public class MypageController {
 
         UserInfo userInfo = mypageService.myInfo(username);
         return ResponseEntity.ok(ApiResponse.success(request, 200, userInfo));
+    }
+
+    @PatchMapping("/nickname")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> updateNickname(@RequestBody Map<String, String> body, HttpServletRequest request) {
+        String token = AccessTokenCookie.getToken(request, jwtTokenProvider);
+        String username = jwtTokenProvider.getUsername(token);
+
+        mypageService.updateNickname(username, body.get("nickname"));
+
+        Map<String, Object> data = Map.of("message", "닉네임 변경 완료");
+        return ResponseEntity.ok(ApiResponse.success(request, 200, data));
+    }
+
+    @PatchMapping("/password")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> updatePassword(@RequestBody Map<String, String> body, HttpServletRequest request) {
+        String token = AccessTokenCookie.getToken(request, jwtTokenProvider);
+        String username = jwtTokenProvider.getUsername(token);
+
+        mypageService.updateNickname(username, body.get("password"));
+
+        Map<String, Object> data = Map.of("message", "비밀번호 변경 완료");
+        return ResponseEntity.ok(ApiResponse.success(request, 200, data));
     }
 }
