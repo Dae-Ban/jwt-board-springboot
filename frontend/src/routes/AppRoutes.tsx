@@ -4,7 +4,7 @@ import AboutPage from '../pages/AboutPage';
 import RegisterPage from '../pages/RegisterPage';
 import LoginPage from '../pages/LoginPage';
 import ProtectedRoute from '../components/ProtectedRoute';
-import MyPage from '../pages/MyPage';
+import Mypage from '../pages/Mypage';
 
 const AppRoutes = () => (
   <BrowserRouter>
@@ -17,7 +17,7 @@ const AppRoutes = () => (
       {/* 인증 필요 */}
       <Route
         path="/mypage"
-        element={<ProtectedRoute><MyPage /></ProtectedRoute>}
+        element={<ProtectedRoute><Mypage /></ProtectedRoute>}
       />
     </Routes>
   </BrowserRouter>
