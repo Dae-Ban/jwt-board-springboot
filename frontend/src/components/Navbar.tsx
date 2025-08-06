@@ -27,6 +27,7 @@ const Navbar = () => {
             <span id='nav-menus'>
                 <span><a href='/'><button>홈</button></a></span>
                 <span><a href='/about'><button>소개</button></a></span>
+                <span><a href='/board'><button>게시판</button></a></span>
                 {isLoggedIn ? (
                     <span className='logged-in'>
                         <span>환영합니다, {username}님!</span>

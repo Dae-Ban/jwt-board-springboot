@@ -10,5 +10,10 @@
 }
 
 #about-content .group-start td {
-  padding-top: 16px;
+  margin-top: 16px;
+}
+
+#about-content th, #about-content td {
+  border: 1pt solid black;
+  padding: 10px;;
 }
