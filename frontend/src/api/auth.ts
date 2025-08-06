@@ -1,29 +1,36 @@
-import axios from 'axios';
-
-const API_BASE_URL = 'http://localhost:8080/auth';
+import api from './api';
 
 export const register = async (data: { username: string; password: string; nickname: string }) => {
-  const response = await axios.post(`${API_BASE_URL}/register`, data, { withCredentials: true });
+  const response = await api.post(`/auth/register`, data);
   return response.data;
 };
 
 export const login = async (data: { username: string; password: string }) => {
-  const response = await axios.post(`${API_BASE_URL}/login`, data, { withCredentials: true });
+  const response = await api.post(`/auth/login`, data);
   return response.data;
 };
 
 export const logout = async () => {
-  await axios.post(`${API_BASE_URL}/logout`, {}, { withCredentials: true });
+  await api.post(`/auth/logout`, {});
 }
 
 export const checkLogin = async () => {
   try {
-    const res = await axios.get(`${API_BASE_URL}/check`, {
-      withCredentials: true,
-    });
-    const username = res.data.username;
-    return { isAuthenticated: true, username };
-  } catch (err) {
+    const res = await api.get('/auth/check');
+    return { isAuthenticated: true, username: res.data.username };
+  } catch (err: any) {
+    // accessToken 만료로 401일 경우 → refresh 시도
+    if (err.response?.status === 401) {
+      try {
+        await api.post('/auth/refresh');
+        const res = await api.get('/auth/check'); // 다시 인증 확인
+        return { isAuthenticated: true, username: res.data.username };
+      } catch (refreshErr) {
+        // refresh 실패 시 → 로그아웃 처리
+        return { isAuthenticated: false, username: null };
+      }
+    }
+
     return { isAuthenticated: false, username: null };
   }
 };

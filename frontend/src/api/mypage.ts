@@ -1,17 +1,15 @@
-import axios from 'axios';
-import '../styles/mypage.css'
-
-const API_BASE_URL = 'http://localhost:8080/mypage';
+import '../styles/mypage.css';
+import api from './api';
 
 export const myInfo = async () => {
-    const res = await axios.get(`${API_BASE_URL}`, { withCredentials: true });
+    const res = await api.get(`/mypage`);
     return res.data.data;
 }
 
 export const updateNickname = async (nickname: string) => {
-    return await axios.patch(`${API_BASE_URL}/nickname`, { nickname }, { withCredentials: true });
+    return await api.patch(`/mypage/nickname`, { nickname });
 };
 
 export const updatePassword = async (password: string) => {
-    return await axios.patch(`${API_BASE_URL}/password`, { password }, { withCredentials: true });
+    return await api.patch(`/mypage/password`, { password });
 };
