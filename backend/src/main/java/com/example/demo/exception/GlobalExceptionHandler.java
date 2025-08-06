@@ -7,6 +7,7 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -26,27 +27,36 @@ public class GlobalExceptionHandler {
 
 	// 401 - 로그인 실패
 	@ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<ApiResponse<Void>> handleBadCredentials(AuthenticationException ex, HttpServletRequest request) {
+	public ResponseEntity<ApiResponse<Void>> handleBadCredentials(AuthenticationException ex,
+			HttpServletRequest request) {
 		String message;
-        if (ex instanceof UsernameNotFoundException || ex instanceof BadCredentialsException) {
-            message = "아이디 또는 비밀번호가 일치하지 않습니다.";
-        } else if (ex instanceof LockedException) {
-            message = "계정이 잠겼습니다.";
-        } else if (ex instanceof DisabledException) {
-            message = "계정이 비활성화되었습니다.";
-        } else {
-            message = "로그인에 실패했습니다.";
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(ApiResponse.failure(request, HttpStatus.UNAUTHORIZED.value(), message));
-    }
+		if (ex instanceof UsernameNotFoundException || ex instanceof BadCredentialsException) {
+			message = "아이디 또는 비밀번호가 일치하지 않습니다.";
+		} else if (ex instanceof LockedException) {
+			message = "계정이 잠겼습니다.";
+		} else if (ex instanceof DisabledException) {
+			message = "계정이 비활성화되었습니다.";
+		} else {
+			message = "로그인에 실패했습니다.";
+		}
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+				.body(ApiResponse.failure(request, HttpStatus.UNAUTHORIZED.value(), message));
+	}
 
 	// 401 - 토큰 인증 실패
 	@ExceptionHandler(InvalidTokenException.class)
-    public ResponseEntity<ApiResponse<Void>> handleInvalidToken(InvalidTokenException ex, HttpServletRequest request) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(ApiResponse.failure(request, HttpStatus.UNAUTHORIZED.value(), ex.getMessage()));
-    }
+	public ResponseEntity<ApiResponse<Void>> handleInvalidToken(InvalidTokenException ex, HttpServletRequest request) {
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+				.body(ApiResponse.failure(request, HttpStatus.UNAUTHORIZED.value(), ex.getMessage()));
+	}
+
+	// 405
+	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+	public ResponseEntity<ApiResponse<Void>> handleMethod(HttpRequestMethodNotSupportedException ex,
+			HttpServletRequest request) {
+		return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
+				.body(ApiResponse.failure(request, HttpStatus.METHOD_NOT_ALLOWED.value(), "요청 방식 오류"));
+	}
 
 	// 500 - 예상하지 못한 서버 오류
 	@ExceptionHandler(Exception.class)
