@@ -1,4 +1,5 @@
 import api from './api';
+import { ApiResponse } from './ApiResponse';
 
 export const register = async (data: { username: string; password: string; nickname: string }) => {
   const response = await api.post(`/auth/register`, data);
@@ -34,3 +35,10 @@ export const checkLogin = async () => {
     return { isAuthenticated: false, username: null };
   }
 };
+
+export const withdraw = async (password: string): Promise<ApiResponse<null>> => {
+  const res = await api.delete<ApiResponse<null>>('/auth/withdraw', {
+    data: { password }
+  });
+  return res.data;
+}
