@@ -11,8 +11,8 @@ const Navbar = () => {
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
     const username = useSelector((state: RootState) => state.auth.username);
 
-    const handleLogin = () => {
-        navigate('/login');
+    const handleNavigate = (path: string) => {
+        navigate(`/${path}`);
     };
 
     const handleLogout = () => {
@@ -34,7 +34,11 @@ const Navbar = () => {
                         <span><button onClick={handleLogout}>로그아웃</button></span>
                     </span>
                 ) : (
-                    <span><button onClick={handleLogin}>로그인</button></span>
+                    <span className='logged-out'>
+                        <span><button onClick={() => handleNavigate('login')}>로그인</button></span>
+                        <span><button onClick={() => handleNavigate('register')}>회원가입</button></span>
+                    </span>
+
                 )}
             </span>
         </nav>
