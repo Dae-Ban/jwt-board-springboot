@@ -1,16 +1,21 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { authActions } from "../store/authSlice";
 import { logout, withdraw } from "../api/auth";
 
 const WithdrawForm = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleSubmit = async () => {
         try {
             const result = await withdraw(password);
             if (result.success) {
                 logout();
+                dispatch(authActions.logout());
+                sessionStorage.removeItem('auth');
                 console.log('탈퇴 성공');
                 alert('탈퇴 완료');
                 navigate('/');

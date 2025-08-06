@@ -19,7 +19,6 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
 
     public void register(RegisterRequest request) {
         userRepository.findByUsername(request.getUsername())
@@ -44,6 +43,10 @@ public class AuthService {
         }
 
         return user;
+    }
+
+    public void delete(User user) {
+        userRepository.delete(user);
     }
 
 }

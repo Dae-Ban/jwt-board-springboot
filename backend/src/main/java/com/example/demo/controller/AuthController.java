@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -122,6 +123,22 @@ public class AuthController {
         response.addHeader("Set-Cookie", cookie.toString());
 
         Map<String, Object> data = Map.of("message", "로그인 성공");
+        return ResponseEntity.ok(ApiResponse.success(request, 200, data));
+    }
+
+    @DeleteMapping("withdraw")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> withdraw(@RequestBody LoginRequest userCheck,
+            HttpServletRequest request) {
+        
+        String token = AccessTokenCookie.getToken(request, jwtTokenProvider);
+        String username = jwtTokenProvider.getUsername(token);
+
+        userCheck.setUsername(username);
+        User user = authService.login(userCheck);
+
+        authService.delete(user);
+
+        Map<String, Object> data = Map.of("message", "회원 탈퇴 완료");
         return ResponseEntity.ok(ApiResponse.success(request, 200, data));
     }
 
