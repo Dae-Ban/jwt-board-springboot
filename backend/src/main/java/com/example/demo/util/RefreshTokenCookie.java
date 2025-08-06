@@ -9,7 +9,7 @@ import com.example.demo.security.JwtTokenProvider;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
-public class AccessTokenCookie {
+public class RefreshTokenCookie {
 
     public static String getToken(HttpServletRequest request, JwtTokenProvider jwtTokenProvider) {
         String token = null;
@@ -17,7 +17,7 @@ public class AccessTokenCookie {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if ("accessToken".equals(cookie.getName())) {
+                if ("refreshToken".equals(cookie.getName())) {
                     token = cookie.getValue();
                     break;
                 }
@@ -31,18 +31,18 @@ public class AccessTokenCookie {
 
     public static ResponseCookie create(String token) {
 
-        ResponseCookie cookie = ResponseCookie.from("accessToken", token)
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", token)
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
                 .sameSite("None") // 리버스 프록시 설정 후 Strict
-                .maxAge(Duration.ofMinutes(15))
+                .maxAge(Duration.ofDays(7))
                 .build();
         return cookie;
     }
 
     public static ResponseCookie delete() {
-        ResponseCookie deleteCookie = ResponseCookie.from("accessToken", "")
+        ResponseCookie deleteCookie = ResponseCookie.from("refreshToken", "")
                 .path("/")
                 .httpOnly(true)
                 .secure(true)
