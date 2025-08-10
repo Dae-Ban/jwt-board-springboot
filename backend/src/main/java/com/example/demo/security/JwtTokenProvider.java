@@ -38,7 +38,7 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
-    // ✅ 토큰 생성
+    // 토큰 생성
     public String createToken(String username) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + tokenValidityInMs);
@@ -61,14 +61,14 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    // ✅ 토큰에서 인증 정보 추출
+    // 토큰에서 인증 정보 추출
     public Authentication getAuthentication(String token) {
         String username = getUsername(token);
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    // ✅ 토큰에서 username 추출
+    // 토큰에서 username 추출
     public String getUsername(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -78,7 +78,7 @@ public class JwtTokenProvider {
                 .getSubject();
     }
 
-    // ✅ 토큰 유효성 검증
+    // 토큰 유효성 검증
     public boolean validateToken(String token) {
         try {
             if (token == null)
