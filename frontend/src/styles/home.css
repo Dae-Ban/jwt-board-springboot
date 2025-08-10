@@ -1,0 +1,42 @@
+#home-content {
+    display: flex;
+    gap: 20px;
+    height: 100%;
+}
+
+#home aside {
+    width: 25%;
+    border: 1px solid #ccc;
+    padding: 10px;
+    column-gap: 5px;
+}
+
+#home main {
+    display: flex;
+    flex: 1;
+    padding: 16px;
+    justify-content: center;
+    background-color: #282c34;
+}
+
+#home main .App-logo {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+#home .side-menu-btn {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    font-size: 16pt;
+}
+
+#home .side-menu-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+#home .side-menu-btn:hover {
+    background-color: #ddd;
+    cursor: pointer;
+}

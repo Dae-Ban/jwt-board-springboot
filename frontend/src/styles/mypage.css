@@ -1,0 +1,31 @@
+#mypage-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap: 20px;
+}
+
+#mypage aside {
+    width: 25%;
+    border: 1px solid #ccc;
+    padding: 10px;
+    column-gap: 5px;
+}
+
+#mypage main {
+    flex: 1;
+    padding: 16px;
+    border: 1px solid #ccc;
+}
+
+#mypage .side-menu-btn {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    font-size: 16pt;
+}
+
+#mypage .side-menu-btn:hover {
+    background-color: #ddd;
+    cursor: pointer;
+}

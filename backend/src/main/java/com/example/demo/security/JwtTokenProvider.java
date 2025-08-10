@@ -11,6 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.exception.InvalidTokenException;
+
 import java.security.Key;
 import java.util.Date;
 
@@ -25,6 +27,9 @@ public class JwtTokenProvider {
 
     @Value("${jwt.token-validity-in-ms}")
     private long tokenValidityInMs;
+
+    @Value("${jwt.refresh-token-validity-in-ms}")
+    private long refreshTokenValidityInMs;
 
     private Key key;
 
@@ -42,6 +47,16 @@ public class JwtTokenProvider {
                 .setSubject(username)
                 .setIssuedAt(now)
                 .setExpiration(expiry)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String createRefreshToken(String username) {
+        long now = System.currentTimeMillis();
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date(now))
+                .setExpiration(new Date(now + refreshTokenValidityInMs))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -66,10 +81,14 @@ public class JwtTokenProvider {
     // ✅ 토큰 유효성 검증
     public boolean validateToken(String token) {
         try {
+            if (token == null)
+                throw new InvalidTokenException("토큰이 없습니다.");
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
+        } catch (ExpiredJwtException e) {
+            throw new InvalidTokenException("토큰이 만료되었습니다.");
+        } catch (UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
+            throw new InvalidTokenException("유효하지 않은 토큰입니다.");
         }
     }
 

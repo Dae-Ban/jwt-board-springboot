@@ -3,6 +3,7 @@ package com.example.demo.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -29,20 +30,21 @@ public class SecurityConfig {
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                 return http
+                                .cors(Customizer.withDefaults())
                                 .csrf(csrf -> csrf.disable())
                                 .httpBasic(httpBasic -> httpBasic.disable())
-                                .formLogin(form -> form.disable())
+                                .formLogin(formLogin -> formLogin.disable())
                                 .sessionManagement(session -> session
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                                 .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers("/auth/**").permitAll() // 로그인, 회원가입은 허용
+                                                .requestMatchers("/auth/**").permitAll()
                                                 .anyRequest().authenticated())
                                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                                                 UsernamePasswordAuthenticationFilter.class)
 
                                 .exceptionHandling(exception -> exception
-                                                .authenticationEntryPoint(authenticationEntryPoint)     // 401
-                                                .accessDeniedHandler(accessDeniedHandler))              // 403
+                                                .authenticationEntryPoint(authenticationEntryPoint) // 401
+                                                .accessDeniedHandler(accessDeniedHandler)) // 403
 
                                 .build();
         }
