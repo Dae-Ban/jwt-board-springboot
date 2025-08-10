@@ -8,6 +8,7 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -23,6 +24,24 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ApiResponse<Void>> handleBadRequest(IllegalArgumentException ex, HttpServletRequest request) {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 				.body(ApiResponse.failure(request, HttpStatus.BAD_REQUEST.value(), ex.getMessage()));
+	}
+
+	// 400 - 게시글 유효성검사
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<ApiResponse<Void>> handleValidation(
+			MethodArgumentNotValidException ex,
+			HttpServletRequest request) {
+
+		String message = ex.getBindingResult()
+				.getFieldErrors()
+				.stream()
+				.map(error -> error.getDefaultMessage())
+				.findFirst()
+				.orElse("잘못된 요청입니다.");
+
+		return ResponseEntity
+				.status(HttpStatus.BAD_REQUEST)
+				.body(ApiResponse.failure(request, HttpStatus.BAD_REQUEST.value(), message));
 	}
 
 	// 401 - 로그인 실패
