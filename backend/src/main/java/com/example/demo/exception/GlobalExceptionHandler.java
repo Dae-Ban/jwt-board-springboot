@@ -50,6 +50,13 @@ public class GlobalExceptionHandler {
 				.body(ApiResponse.failure(request, HttpStatus.UNAUTHORIZED.value(), ex.getMessage()));
 	}
 
+	// 404 - 게시글 없음
+	@ExceptionHandler(PostNotFoundException.class)
+	public ResponseEntity<ApiResponse<Void>> handlePostNotFound(PostNotFoundException ex, HttpServletRequest request) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(ApiResponse.failure(request, HttpStatus.NOT_FOUND.value(), ex.getMessage()));
+	}
+
 	// 405
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
 	public ResponseEntity<ApiResponse<Void>> handleMethod(HttpRequestMethodNotSupportedException ex,
