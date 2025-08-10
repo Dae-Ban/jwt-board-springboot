@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.net.URI;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
@@ -12,15 +13,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.PostDetailDto;
 import com.example.demo.dto.PostListDto;
+import com.example.demo.dto.PostRequest;
+import com.example.demo.entity.Post;
 import com.example.demo.response.ApiResponse;
+import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.BoardService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -29,27 +34,29 @@ import lombok.RequiredArgsConstructor;
 public class BoardController {
 
     private final BoardService boardService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @GetMapping("")
-    public ResponseEntity<ApiResponse<Page<PostListDto>>> list(@PageableDefault(
-        size = 20,
-        page = 1,
-        sort = "id",
-        direction = Sort.Direction.DESC
-    ) Pageable pageable, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<Page<PostListDto>>> list(
+            @PageableDefault(size = 20, page = 1, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+            HttpServletRequest request) {
         Page<PostListDto> page = boardService.findAllForList(pageable);
         return ResponseEntity.ok(ApiResponse.success(request, 200, page));
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<ApiResponse<PostDetailDto>> read(@PathVariable long postId, HttpServletRequest request) {
-        PostDetailDto post = boardService.findDetailById(postId);
+    public ResponseEntity<ApiResponse<Post>> read(@PathVariable long postId, HttpServletRequest request) {
+        Post post = boardService.findDetailById(postId);
         return ResponseEntity.ok(ApiResponse.success(request, 200, post));
     }
 
     @PostMapping("")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> write() {
-        return null;
+    public ResponseEntity<ApiResponse<Long>> write(@Valid @RequestBody PostRequest post,
+            HttpServletRequest request) {
+        Long id = boardService.create(post, request);
+        URI location = URI.create("/board/" + id);
+        return ResponseEntity.created(location)
+                .body(ApiResponse.success(request, 201, id));
     }
 
     @PutMapping("/{postId}")
