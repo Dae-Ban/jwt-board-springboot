@@ -36,7 +36,7 @@ public class Post {
     private String content;
 
     @CreationTimestamp
-    @Column(name = "create_at")
+    @Column(name = "created_at")
     private Timestamp createdAt;
 
     @UpdateTimestamp

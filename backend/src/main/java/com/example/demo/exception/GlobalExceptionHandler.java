@@ -69,6 +69,14 @@ public class GlobalExceptionHandler {
 				.body(ApiResponse.failure(request, HttpStatus.UNAUTHORIZED.value(), ex.getMessage()));
 	}
 
+	// 403 - 권한 없음
+	@ExceptionHandler(ForbiddenException.class)
+	public ResponseEntity<ApiResponse<Void>> handleForbiddenException(ForbiddenException ex,
+			HttpServletRequest request) {
+		return ResponseEntity.status(HttpStatus.FORBIDDEN)
+				.body(ApiResponse.failure(request, HttpStatus.FORBIDDEN.value(), ex.getMessage()));
+	}
+
 	// 404 - 게시글 없음
 	@ExceptionHandler(PostNotFoundException.class)
 	public ResponseEntity<ApiResponse<Void>> handlePostNotFound(PostNotFoundException ex, HttpServletRequest request) {
