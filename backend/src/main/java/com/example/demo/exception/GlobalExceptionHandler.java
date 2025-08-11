@@ -8,6 +8,7 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -23,6 +24,24 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ApiResponse<Void>> handleBadRequest(IllegalArgumentException ex, HttpServletRequest request) {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 				.body(ApiResponse.failure(request, HttpStatus.BAD_REQUEST.value(), ex.getMessage()));
+	}
+
+	// 400 - 게시글 유효성검사
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<ApiResponse<Void>> handleValidation(
+			MethodArgumentNotValidException ex,
+			HttpServletRequest request) {
+
+		String message = ex.getBindingResult()
+				.getFieldErrors()
+				.stream()
+				.map(error -> error.getDefaultMessage())
+				.findFirst()
+				.orElse("잘못된 요청입니다.");
+
+		return ResponseEntity
+				.status(HttpStatus.BAD_REQUEST)
+				.body(ApiResponse.failure(request, HttpStatus.BAD_REQUEST.value(), message));
 	}
 
 	// 401 - 로그인 실패
@@ -48,6 +67,21 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ApiResponse<Void>> handleInvalidToken(InvalidTokenException ex, HttpServletRequest request) {
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
 				.body(ApiResponse.failure(request, HttpStatus.UNAUTHORIZED.value(), ex.getMessage()));
+	}
+
+	// 403 - 권한 없음
+	@ExceptionHandler(ForbiddenException.class)
+	public ResponseEntity<ApiResponse<Void>> handleForbiddenException(ForbiddenException ex,
+			HttpServletRequest request) {
+		return ResponseEntity.status(HttpStatus.FORBIDDEN)
+				.body(ApiResponse.failure(request, HttpStatus.FORBIDDEN.value(), ex.getMessage()));
+	}
+
+	// 404 - 게시글 없음
+	@ExceptionHandler(PostNotFoundException.class)
+	public ResponseEntity<ApiResponse<Void>> handlePostNotFound(PostNotFoundException ex, HttpServletRequest request) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(ApiResponse.failure(request, HttpStatus.NOT_FOUND.value(), ex.getMessage()));
 	}
 
 	// 405

@@ -36,10 +36,12 @@ public class Post {
     private String content;
 
     @CreationTimestamp
-    private Timestamp created_at;
+    @Column(name = "created_at")
+    private Timestamp createdAt;
 
     @UpdateTimestamp
-    private Timestamp updated_at;
+    @Column(name = "updated_at")
+    private Timestamp updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
