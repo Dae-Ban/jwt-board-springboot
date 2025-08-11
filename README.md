@@ -6,6 +6,8 @@
   <li>응답바디와 전역 예외처리로 획일화된 응답 구현</li>
 </ol>
 
+---
+
 ## 🧰 기술 스택
 
 ### Frontend
@@ -39,6 +41,66 @@
   <img src="https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white" />
 </p>
 
-<br><br><br>
+---
+
+## 프로젝트 구조
+```
+jwt-board-springboot/
+│
+├── README.md
+├── .gitignore
+│
+├── frontend/
+│   ├── public/
+│   │   ├── favicon.ico
+│   │   ├── index.html
+│   │   └── manifest.json
+│   ├── src/
+│   │   ├── index.tsx
+│   │   ├── App.tsx
+│   │   ├── pages/
+│   │   ├── components/
+│   │   ├── routes/
+│   │   ├── api/
+│   │   ├── store/
+│   │   └── styles/
+│   ├── .env
+│   └── tsconfig.json
+│
+└── backend/
+    ├── gradlew
+    ├── build.gradle
+    ├── settings.gradle
+    ├── gradle/
+    │   └── wrapper/
+    │       ├── gradle-wrapper.jar
+    │       └── gradle-wrapper.properties
+    └── src/
+        ├── main/
+        │   ├── java/
+        │   │   └── com/
+        │   │       └── example/
+        │   │           └── demo/
+        │   │               ├── config/
+        │   │               ├── controller/
+        │   │               ├── service/
+        │   │               ├── Repository/
+        │   │               ├── entity/
+        │   │               ├── dto/
+        │   │               ├── response/
+        │   │               ├── security/
+        │   │               ├── exception/
+        │   │               └── util/
+        │   │                   ├── AccessTokenCookie.java
+        │   │                   └── RefreshTokenCookie.java
+        │   └── resources/
+        │       ├── application.properties
+        │       └── secret.properties
+        └── test/
+
+```
+
+---
+
 # 요청과 응답
 
