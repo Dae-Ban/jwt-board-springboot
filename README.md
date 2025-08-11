@@ -6,11 +6,36 @@
   <li>응답바디와 전역 예외처리로 획일화된 응답 구현</li>
 </ol>
 
-# 개발환경
-<ul>
-  <li>FE: React, Typescript</li>
-  <li>BE: Spring Boot 3, JPA</li>
-  <li>DB: MySQL 8, Redis</li>
-  <li>인증: Spring Security, JWT, Bcrypt</li>
-  <li>빌드: Gradle</li>
-</ul>
+## 🧰 기술 스택
+
+### Frontend
+<p>
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+</p>
+
+### Backend
+<p>
+  <img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=openjdk&logoColor=white" />
+  <img src="https://img.shields.io/badge/Spring%20Boot%203-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" />
+  <img src="https://img.shields.io/badge/Hibernate-59666C?style=for-the-badge&logo=hibernate&logoColor=white" />
+</p>
+
+### Database
+<p>
+  <img src="https://img.shields.io/badge/MySQL%208-4479A1?style=for-the-badge&logo=mysql&logoColor=white" />
+  <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white" />
+</p>
+
+### Auth
+<p>
+  <img src="https://img.shields.io/badge/Spring%20Security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white" />
+  <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white" />
+  <img src="https://img.shields.io/badge/Bcrypt-3385FF?style=for-the-badge&logoColor=white" />
+</p>
+
+### Build
+<p>
+  <img src="https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white" />
+</p>
+
