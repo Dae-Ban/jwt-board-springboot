@@ -17,23 +17,23 @@ public class MypageService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserInfo myInfo(String username) {
-        User user = userRepository.findByUsername(username)
+    public UserInfo myInfo(long id) {
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 
         return new UserInfo(user);
     }
 
-    public void updateNickname(String username, String newNickname) {
-        User user = userRepository.findByUsername(username)
+    public void updateNickname(long id, String newNickname) {
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 
         user.setNickname(newNickname);
         userRepository.save(user);
     }
 
-    public void updatePassword(String username, String newPassword) {
-        User user = userRepository.findByUsername(username)
+    public void updatePassword(long id, String newPassword) {
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 
         user.setPassword(passwordEncoder.encode(newPassword));
