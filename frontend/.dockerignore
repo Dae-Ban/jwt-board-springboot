@@ -1,0 +1,17 @@
+node_modules
+build
+dist
+
+# 환경설정 / 임시 파일
+npm-debug.log
+yarn-error.log
+.DS_Store
+.env.local
+.env.development
+.env.test
+.env
+
+# IDE / OS 관련
+.idea
+.vscode
+*.iml
