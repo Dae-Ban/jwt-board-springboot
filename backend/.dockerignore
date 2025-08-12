@@ -6,3 +6,5 @@ out/
 *.iml
 *.log
 secret.properties
+
+!gradle/wrapper/gradle-wrapper.jar

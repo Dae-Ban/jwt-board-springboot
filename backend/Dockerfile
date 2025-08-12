@@ -1,19 +1,24 @@
 # --- Build stage ---
-FROM eclipse-temurin:21-jdk-alpine AS builder
+FROM eclipse-temurin:17-jdk-alpine AS builder
 WORKDIR /app
 
-# Gradle
-COPY backend/gradlew backend/gradle /app/
-COPY backend/build.gradle backend/settings.gradle /app/
+# gradlew + wrapper
+COPY gradlew ./
+COPY gradle/wrapper/gradle-wrapper.jar gradle/wrapper/
+COPY gradle/wrapper/gradle-wrapper.properties gradle/wrapper/
 
-# 소스 복사
-COPY backend/src /app/src
+# 윈도우 줄바꿈
+RUN sed -i 's/\r$//' gradlew
+
+# 빌드 파일/소스 복사
+COPY build.gradle settings.gradle ./
+COPY src ./src
 
 # 의존성/빌드 (Gradle)
 RUN chmod +x ./gradlew && ./gradlew clean bootJar --no-daemon
 
 # --- Runtime stage ---
-FROM eclipse-temurin:21-jre-alpine
+FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 # 빌드 산출물 복사 (Gradle)
 COPY --from=builder /app/build/libs/*.jar app.jar

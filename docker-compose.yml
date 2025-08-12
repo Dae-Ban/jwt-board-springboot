@@ -1,0 +1,73 @@
+# docker-compose.yml
+version: "3.9"
+
+services:
+  backend:
+    image: ysc1086/jwt-board-backend:1.0.0
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      # Redis 설정
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_DATA_REDIS_PASSWORD: ${REDIS_PASSWORD}
+      # JWT/DB 등 필요한 시크릿들
+      JWT_SECRET: ${JWT_SECRET}
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+
+    depends_on:
+      redis:
+        condition: service_healthy
+    # 로컬 디버깅용 포트
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    networks: [app-net]
+    # Actuator
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+  frontend:
+    image: ysc1086/jwt-board-frontend:1.0.0
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    networks: [app-net]
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    command: >
+      sh -c "redis-server --appendonly yes
+             --requirepass ${REDIS_PASSWORD}"
+    volumes:
+      - redis-data:/data
+    expose:
+      - "6379"
+    restart: unless-stopped
+    networks: [app-net]
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a ${REDIS_PASSWORD} ping | grep PONG"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+networks:
+  app-net:
+
+volumes:
+  redis-data:
