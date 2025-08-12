@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.UserInfo;
 import com.example.demo.dto.UserPrincipal;
 import com.example.demo.response.ApiResponse;
-import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.MypageService;
-import com.example.demo.util.AccessTokenCookie;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
