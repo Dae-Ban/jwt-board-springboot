@@ -1,0 +1,10 @@
+build/**
+!build/libs/**
+.gradle/
+out/
+.env
+*.iml
+*.log
+secret.properties
+
+!gradle/wrapper/gradle-wrapper.jar

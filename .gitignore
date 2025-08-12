@@ -22,3 +22,5 @@ backend/src/main/resources/secret.properties
 .DS_Store
 
 README.md
+
+.env
